@@ -4,7 +4,7 @@
   
   <url>
     <loc>https://krish22.github.io/posts/</loc>
-    <lastmod>2020-01-01T00:00:00+05:30</lastmod>
+    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -14,7 +14,42 @@
   
   <url>
     <loc>https://krish22.github.io/categories/</loc>
-    <lastmod>2020-01-01T00:00:00+05:30</lastmod>
+    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/tags/consul/</loc>
+    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/categories/development/</loc>
+    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/posts/spring-consul/</loc>
+    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/</loc>
+    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/tags/spring/</loc>
+    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/tags/springboot/</loc>
+    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/tags/</loc>
+    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -33,17 +68,7 @@
   </url>
   
   <url>
-    <loc>https://krish22.github.io/</loc>
-    <lastmod>2020-01-01T00:00:00+05:30</lastmod>
-  </url>
-  
-  <url>
     <loc>https://krish22.github.io/tags/layout/</loc>
-    <lastmod>2020-01-01T00:00:00+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krish22.github.io/tags/</loc>
     <lastmod>2020-01-01T00:00:00+05:30</lastmod>
   </url>
   
@@ -94,11 +119,6 @@
   
   <url>
     <loc>https://krish22.github.io/posts/goisforlovers/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krish22.github.io/categories/development/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   

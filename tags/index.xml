@@ -6,10 +6,197 @@
    <description>Recent content in Tags on Krishnan</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp;copy; 2020 - Krishnan</copyright>
-   <lastBuildDate>Wed, 01 Jan 2020 00:00:00 +0530</lastBuildDate>
+   <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate>
    
        <atom:link href="https://krish22.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Keep Your Secrets Away From Code (Consul &#43; Spring)</title>
+       <link>https://krish22.github.io/posts/spring-consul/</link>
+       <pubDate>Sat, 04 Jul 2020 00:00:00 +0000</pubDate>
+       
+       <guid>https://krish22.github.io/posts/spring-consul/</guid>
+       <description>&lt;p&gt;This post will walk you through the Consul cloud security platform, and how to integrate it with your Spring application.&lt;/p&gt;
+&lt;h2 id=&#34;consul&#34;&gt;Consul&lt;/h2&gt;
+&lt;p&gt;According it&amp;rsquo;s documentation, &amp;ldquo;Consul is a distributed service mesh to connect, secure, and configure services across any runtime platform and public or private cloud.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;You can read more about Consul &lt;a href=&#34;https://www.consul.io/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Now, we are going to focus on the key/value store in Consul. The KV store is one of the major features available in Consul to have all your application configuration properties in one place.&lt;/p&gt;
+&lt;h2 id=&#34;problem&#34;&gt;Problem&lt;/h2&gt;
+&lt;p&gt;Generally, we all are taught to have our application-related configurations in an application.properties file. Whenever we need to change the value, then we will be changing it in the file and have to rebuild and re-deploy the application to make changes to the application.&lt;/p&gt;
+&lt;p&gt;For instance, assume you have a secret key or password in your application.properties file. If there is any attack on your server and the code leaks, all your critical information and your system will become vulnerable.&lt;/p&gt;
+&lt;h2 id=&#34;solution&#34;&gt;Solution&lt;/h2&gt;
+&lt;p&gt;Consul will actually help you to avoid the above-stated problems.&lt;/p&gt;
+&lt;h2 id=&#34;why-consul-kv&#34;&gt;Why Consul KV&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;You will be storing all your configuration properties in the Consul KV store which eliminates code leaks.&lt;/li&gt;
+&lt;li&gt;Whenever there is a change in the key/value, you are not required to redeploy or reboot your server.&lt;/li&gt;
+&lt;li&gt;Spring boot has an efficiency to reflect the values in your application instantly.&lt;/li&gt;
+&lt;li&gt;One Consul instance is sufficient to have all your environment properties like dev, stage, and production protected.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;install-consul&#34;&gt;Install Consul&lt;/h2&gt;
+&lt;p&gt;There are multiple ways to install Consul:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You can install it using &lt;a href=&#34;https://www.consul.io/docs/guides/consul-containers.html&#34;&gt;Docker&lt;/a&gt; .&lt;/li&gt;
+&lt;li&gt;You can download and run it on your &lt;a href=&#34;https://www.consul.io/downloads.html&#34;&gt;local machine&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I have used the second approach, and downloaded the file and extracted it onto a local directory.&lt;/p&gt;
+&lt;h2 id=&#34;steps-to-start-consul&#34;&gt;Steps to Start Consul&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Open your terminal.&lt;/li&gt;
+&lt;li&gt;Go to the directory where you have extracted Consul.&lt;/li&gt;
+&lt;li&gt;Run the below commands:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;root $ ./consul agent -server -bootstrap-expect=1 -data-dir=consul-data -ui -bind=127.0.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;Open the browser and go to http://localhost:8500.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now you will see a Consul screen.&lt;/p&gt;
+&lt;h2 id=&#34;create-kv-in-consul&#34;&gt;Create KV in Consul&lt;/h2&gt;
+&lt;p&gt;You can insert your KV into Consul in two ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Using the command line tool.&lt;/li&gt;
+&lt;li&gt;Using the browser.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;using-the-command-line-tool&#34;&gt;Using the Command Line Tool&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Run the below command to insert a single key:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;root $  ./consul kv put config/testapplication/testkey testvalue
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; You need to maintain the above coding standard, i.e. config is mandatory followed by your application name and followed by your key name.
+Tables aren&amp;rsquo;t part of the core Markdown spec, but Hugo supports supports them out-of-the-box.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Follow this to insert multiple keys:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a .json file as follows
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;[
+    {   
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;key&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;config/testApplication/testkey&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;value:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;dGVzdFZhbHVl&amp;#34;&lt;/span&gt;
+    },
+    {   
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;key&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;config/testApplication/testkey2&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;value:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;dGVzdFZhbHVls&amp;#34;&lt;/span&gt;
+    }
+]    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Note:&lt;/em&gt; The value should be a Base-64 Encoded String.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Then run the below commands to import data’s to consul
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;root $  ./consul kv import @/your-file-path/filename.json
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;To know more about Consul KV commands, go &lt;a href=&#34;https://www.consul.io/docs/commands/index.html&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;using-the-browser&#34;&gt;Using the Browser&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Open http://localhost:8500 in your browser.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Click key/value in the menu.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/consul.png&#34; alt=&#34;consul screenshot&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Click the Create button.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Enter the key as follows:
+&lt;code&gt;config/testApplication/testkey&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Enter the value as follows:
+&lt;code&gt;test value&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note: You don&amp;rsquo;t have to encode the string in the case of the UI&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That’s it, now Consul is ready to integrate with your application.&lt;/p&gt;
+&lt;h2 id=&#34;steps-to-integrate-consul-with-your-spring-application&#34;&gt;Steps to Integrate Consul With Your Spring Application:&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;If you don&amp;rsquo;t already have a Spring application up and running, you can create one &lt;a href=&#34;https://start.spring.io/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add the below dependency to the build.gradle file.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-gradle&#34; data-lang=&#34;gradle&#34;&gt;dependencies
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;       
+    compile group &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;org.springframework.cloud&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; name &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;spring-cloud-starter-consul-config&amp;#39;&lt;/span&gt;      
+    compile group &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;org.springframework.cloud&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; name &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;spring-cloud-starter-consul-discovery&amp;#39;&lt;/span&gt;      
+    compile group &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;org.springframework.boot&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; name &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;spring-boot-starter-actuator&amp;#39;&lt;/span&gt;   
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The Spring actuator is mandatory so that Consul will keep checking the health status of your application.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add dependency management to the build.gradle file.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-gradle&#34; data-lang=&#34;gradle&#34;&gt;dependencyManagement 
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;    
+imports 
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;      
+        mavenBom &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;org.springframework.cloud:spring-cloud-dependencies:Finchley.SR1&amp;#34;&lt;/span&gt;    
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; 
+ &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create a bootstarp.yml file under src/main/resources as follows&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;spring&lt;/span&gt;: 
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;application&lt;/span&gt;: {&lt;span style=&#34;color:#66d9ef&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;testApplication&amp;#39;&lt;/span&gt;} 
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;cloud&lt;/span&gt;:   
+   &lt;span style=&#34;color:#66d9ef&#34;&gt;consul&lt;/span&gt;:    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;enabled&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;true&amp;#39;&lt;/span&gt;    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;host&lt;/span&gt;: http://localhost    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;port&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;8500&lt;/span&gt;    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;discovery&lt;/span&gt;: {&lt;span style=&#34;color:#66d9ef&#34;&gt;healthCheckInterval&lt;/span&gt;: 300s}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The application name should match the folder name you created in Consul under the Config directory.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Use the &lt;code&gt;@Value&lt;/code&gt; annotation to bind the values from consul as follow&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Component&lt;/span&gt; 
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@RefreshScope&lt;/span&gt; 
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Class &lt;span style=&#34;color:#a6e22e&#34;&gt;AppConfig&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;       
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;@Value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;${testKey}&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;     
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; String values&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;     
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;That’s it Spring Consul will take care of binding the values from consul to your application.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;@RefreshScope annotation is used in the above class, which will say that, if there any changes in the consul then it will immediately refresh the values in the application without restarting. If you havent use @RefreshScope then you need to manually restart the system to apply your config changes&lt;/li&gt;
+&lt;li&gt;@RefreshScope will work with annotations like (@component, @service, @controller,@repository etc,)&lt;/li&gt;
+&lt;li&gt;Know more about &lt;a href=&#34;https://github.com/dangdangdotcom/config-toolkit/wiki/Refresh-bean-with-spring-cloud&#39;s-@RefreshScope-support&#34;&gt;@RefreshScope&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add &lt;code&gt;@EnableDiscoveryClient&lt;/code&gt; into your main class.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@EnableAutoConfiguration&lt;/span&gt; 
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@EnableDiscoveryClient&lt;/span&gt; 
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@SpringBootApplication&lt;/span&gt; 
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;TestApplication&lt;/span&gt; 
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;       
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; args&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;         
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; TestApplication&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;TestApplication&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;args&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;     
+  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;      
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now run your application. It will look for Consul and the values will be bound.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;That’s all! Now you have learned the importance of the Consul KV store and how to integrate it with your Spring application.&lt;/p&gt;</description>
+     </item>
    
      <item>
        <title>Feature Image</title>
