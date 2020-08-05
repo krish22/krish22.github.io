@@ -327,5 +327,32 @@ imports
 &lt;p&gt;That’s all! Now you have learned the importance of the Consul KV store and how to integrate it with your Spring application.&lt;/p&gt;</description>
      </item>
    
+     <item>
+       <title>Basic Unix Commands</title>
+       <link>https://krish22.github.io/posts/unix-commands/</link>
+       <pubDate>Fri, 05 Apr 2019 00:00:00 +0000</pubDate>
+       
+       <guid>https://krish22.github.io/posts/unix-commands/</guid>
+       <description>&lt;p&gt;This post has basic unix commands that we use day by day&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;To check all tcp listen port&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo netstat -ntlp | grep LISTEN&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;There&amp;rsquo;s a few parameters to netstat that are useful for this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;-l or &amp;ndash;listening shows only the sockets currently listening for incoming connection.&lt;/li&gt;
+&lt;li&gt;-a or &amp;ndash;all shows all sockets currently in use.&lt;/li&gt;
+&lt;li&gt;-t or &amp;ndash;tcp shows the tcp sockets.&lt;/li&gt;
+&lt;li&gt;-u or &amp;ndash;udp shows the udp sockets.&lt;/li&gt;
+&lt;li&gt;-n or &amp;ndash;numeric shows the hosts and ports as numbers, instead of resolving in dns and looking in /etc/services.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;To find process id for specific port&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo netstat -anp | grep 8080&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
+     </item>
+   
  </channel>
 </rss>
