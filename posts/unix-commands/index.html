@@ -1,0 +1,264 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Krishnan</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="A blog for technical and non techinal writings." />
+<meta name="author" content="Krishnan" /><meta property="og:title" content="Basic Unix Commands" />
+<meta property="og:description" content="This post has basic unix commands" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://krish22.github.io/posts/unix-commands/" />
+<meta property="article:published_time" content="2019-04-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-04-05T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Basic Unix Commands"/>
+<meta name="twitter:description" content="This post has basic unix commands"/>
+
+<meta name="generator" content="Hugo 0.74.1" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://krish22.github.io/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://krish22.github.io/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://krish22.github.io/">Krishnan</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/krish22" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://twitter.com/krishnanvgp" title="Twitter">
+               <i class="fab fa-twitter fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://stackoverflow.com/users/2425514/krishnan" title="StackOverflow">
+               <i class="fab fa-stack-overflow fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Software Developer</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://krish22.github.io/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://krish22.github.io/tags">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://krish22.github.io/categories">
+                <i class="fa-li fa  fa-lg"></i><span>Categories</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://krish22.github.io/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Basic Unix Commands</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2019-04-05T00:00:00Z">Apr 5, 2019</time>
+        </li>
+        
+        <li>
+            Categories:
+            <em>
+                
+                    
+                    <a href="https://krish22.github.io/categories/linux">Linux</a>
+                
+            </em>
+        </li>
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="https://krish22.github.io/tags/ubuntu">#ubuntu</a>
+                
+            </em>
+        </li>
+        
+
+        <li>One minute read</li>
+    </ul>
+</aside>
+
+    
+
+    
+<div class="featured_image">
+    <a href="https://krish22.github.io/posts/unix-commands/" title="Basic Unix Commands">
+        <img src="">
+    </a>
+</div>
+
+
+
+    <p>This post has basic unix commands that we use day by day</p>
+<ol>
+<li>
+<p>To check all tcp listen port</p>
+<p><code>sudo netstat -ntlp | grep LISTEN</code></p>
+<p>There&rsquo;s a few parameters to netstat that are useful for this:</p>
+<ol>
+<li>-l or &ndash;listening shows only the sockets currently listening for incoming connection.</li>
+<li>-a or &ndash;all shows all sockets currently in use.</li>
+<li>-t or &ndash;tcp shows the tcp sockets.</li>
+<li>-u or &ndash;udp shows the udp sockets.</li>
+<li>-n or &ndash;numeric shows the hosts and ports as numbers, instead of resolving in dns and looking in /etc/services.</li>
+</ol>
+</li>
+<li>
+<p>To find process id for specific port</p>
+<p><code>sudo netstat -anp | grep 8080</code></p>
+</li>
+<li>
+<p>To find java process</p>
+<p><code>ps aux | grep java</code></p>
+</li>
+</ol>
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        
+        <li>
+            <a href="https://krish22.github.io/posts/spring-consul/">Keep Your Secrets Away From Code (Consul &#43; Spring) <i class="fa fa-chevron-circle-right"></i> </a>
+        </li>
+        
+    </ul>
+</section>
+  
+    
+    
+        <section class="comments-block">
+      <button id="show-comments" style="display: none;"><i class="fa fa-comments"></i> Add/View Comments</button>
+</section>
+
+<section id="disqus_thread"></section>
+
+<script>
+      (function () {
+            
+            
+            if (window.location.hostname == "localhost")
+                  return;
+
+            var disqus_loaded = false;
+            var disqus_shortname = 'kris22-github-io';
+            var disqus_button = document.getElementById("show-comments");
+
+            var disqus_autoload =  true ;
+            var disable_comment =  null ;
+
+            if (disable_comment)
+                  return;
+
+            disqus_button.style.display = "";
+
+            if (disqus_autoload){
+                  disqus();
+            }else{
+                  disqus_button.addEventListener("click", disqus, false);
+            }
+
+            function disqus() {
+
+                  if (!disqus_loaded) {
+                        disqus_loaded = true;
+
+                        var e = document.createElement("script");
+                        e.type = "text/javascript";
+                        e.async = true;
+                        e.src = "//" + disqus_shortname + ".disqus.com/embed.js";
+                        (document.getElementsByTagName("head")[0] ||
+                              document.getElementsByTagName("body")[0])
+                        .appendChild(e);
+
+                        
+                        document.getElementById("show-comments").style.display = "none";
+                  }
+            }
+
+            
+            var hash = window.location.hash.substr(1);
+            if (hash.length > 8) {
+                  if (hash.substring(0, 8) == "comment-") {
+                        disqus();
+                  }
+            }
+
+            
+            if (/bot|google|baidu|bing|msn|duckduckgo|slurp|yandex/i.test(navigator.userAgent)) {
+                  disqus();
+            }
+      })();
+</script>
+
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright © 2020 - Krishnan </h6>
+    </footer>
+</div>
+<script src="https://krish22.github.io/js/scripts.js"></script>
+
+</body>
+
+</html>
+

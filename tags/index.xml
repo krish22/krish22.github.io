@@ -351,6 +351,10 @@ imports
 &lt;p&gt;To find process id for specific port&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;sudo netstat -anp | grep 8080&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;To find java process&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ps aux | grep java&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;</description>
      </item>
    
