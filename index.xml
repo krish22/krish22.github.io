@@ -6,10 +6,120 @@
    <description>Recent content on Krishnan</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp;copy; 2020 - Krishnan</copyright>
-   <lastBuildDate>Sun, 05 Jul 2020 00:00:00 +0000</lastBuildDate>
+   <lastBuildDate>Fri, 25 Sep 2020 00:00:00 +0000</lastBuildDate>
    
        <atom:link href="https://krish22.github.io/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>In Memory Server side pagination</title>
+       <link>https://krish22.github.io/posts/pagination-plugin/</link>
+       <pubDate>Fri, 25 Sep 2020 00:00:00 +0000</pubDate>
+       
+       <guid>https://krish22.github.io/posts/pagination-plugin/</guid>
+       <description>&lt;p&gt;Are you dealing with tens-of-thousands of data that supposed to show in the UI, but your data source doesn&amp;rsquo;t support
+pagination and filtering provisons. Server Side pagination will be the best suit for that, No worries this plugin will help you to achive pagination, sorting and filtering using in-memory&lt;/p&gt;
+&lt;h2 id=&#34;server-side-pagination&#34;&gt;Server Side Pagination&lt;/h2&gt;
+&lt;p&gt;As we are developing so many software in today&amp;rsquo;s world and dealing with millions and millions of data. Imagine a situation where you have millions of data to show on your web page. A browser will have not able to render all the data at one shot. So the best option is to go for server-side pagination, where a server will return the bounded number of rows to show in the UI.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;about-this-plugin&#34;&gt;About this Plugin&lt;/h2&gt;
+&lt;p&gt;In most cases, we have a relational database or no-SQL databases which will run the query with limit, offset, ordering along with filtering/searching criteria.&lt;/p&gt;
+&lt;p&gt;There may be a situation arise where you cannot afford to run a SQL query to get the data, but you want to do support pagination.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Yes here, this plugin will have all the data&amp;rsquo;s that loaded in to server and does magic of (pagination, searching) for you.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;Note: Assuming you have very good memory allocated for JVM, and GC will help us to remove the unused objects at an earlier stage.&lt;/code&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;things-that-this-plugin-supports&#34;&gt;Things that this plugin supports&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;This allows you to use pagination with help of limit and offset&lt;/li&gt;
+&lt;li&gt;One can sort the data by column&lt;/li&gt;
+&lt;li&gt;Also, search the text in all column (case-insensitive) and get the relevant data&lt;/li&gt;
+&lt;li&gt;It also includes the regex supports for searching, (i.e) you can pass a regular expression to find relevant data,&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;lets-learn-how-to-use-this-plugin&#34;&gt;Let&amp;rsquo;s Learn how to use this plugin&lt;/h2&gt;
+&lt;p&gt;This plugin is written in JAVA 1.8 version.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Import the source code from &lt;a href=&#34;https://github.com/krish22/paginationplugin&#34;&gt;here&lt;/a&gt; into your application&lt;/li&gt;
+&lt;li&gt;In your repository class extends the PagainationDataService and just override the getData() method as follow, This method will return the complete source data from which the plugin will take care of performing pagination and searching for you.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;EmployeeRepository&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; PaginationDataServiceBase&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Employee&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;protected&lt;/span&gt; List &lt;span style=&#34;color:#a6e22e&#34;&gt;getData&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;PaginationCriteria paginationCriteria&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; PaginationException &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;YOUR ENTIRE SOURCE DATA&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Now, From your service or controller class, create a simple paginator object and call getPageResult as follow,&lt;/li&gt;
+&lt;li&gt;A getPageResult() method will take PaginationCritera as an input which follows&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;PaginationCriteria&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * Number of items that need to to displayed in a page
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * If it is 0 then it will return all records
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     */&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; limit&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * Paging first record indicator. This is the start point in the current data
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * set (0 index based - i.e. 0 is the first record).
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     */&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; offset&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * search text that will do searching in all columns
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     */&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; String query&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * Column&amp;#39;s ordering criteria.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     */&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; OrderingCriteria sort&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * Name of the column to sort
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     */&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; String column&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;This plugin also supports search with regex as well.&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;DemoApplication&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; ITablePaginator&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Employee&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; paginator &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; SimplePaginator&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Employee&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; EmployeeRepository&lt;span style=&#34;color:#f92672&#34;&gt;());&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; args&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; PaginationException &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        PaginationCriteria criteria &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; PaginationCriteria&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+
+        IPage&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; pageResult &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; paginator&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getPageResult&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;criteria&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+        System&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;pageResult&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;This Plugin allows you to fully customize the implementations, for instance, the SimplePaginator will be used for performing all pagination, searching, and sorting of an object by holding it into a memory.&lt;/li&gt;
+&lt;li&gt;SimplePaginator will build the output and returns the values as below&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
+     &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;totalCount&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;10,&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;//&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;This&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;represent&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;the&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;total&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;record&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;count&lt;/span&gt;
+     &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;items&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;[//&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;Array&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;of&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;your&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;object]&lt;/span&gt;
+     &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;limit&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;10,//&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;This&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;specifies&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;the&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;number&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;of&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;records&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;that&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;need&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;to&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;be&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;returned&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;page.&lt;/span&gt;
+     &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;offset&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;10,&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;//This&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;specifies&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;the&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;number&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;of&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;rows&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;to&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;skip&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;before&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;starting&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;to&lt;/span&gt;    &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;rows&lt;/span&gt;
+     &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;filteredCount&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;2,&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;//&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;This&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;specified&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;the&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;number&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;of&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;records&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;mathced&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;with&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;search&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;text&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;7&#34;&gt;
+&lt;li&gt;You can also implement your own ITablePaginator if you wish you have any other behavior&lt;/li&gt;
+&lt;li&gt;Now, assume your application uses any relation or NO-SQL database which supports pagination and filtering option by using a query.&lt;/li&gt;
+&lt;li&gt;In such a case, you can still this plugin by overriding the getPageEntries(PaginationCriteria criteria) method from PaginationDataServiceBase, but remember you need to write a query with ordering, limiting, offset, and filtering clause&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;points-to-remember&#34;&gt;POINTS TO REMEMBER&lt;/h3&gt;
+&lt;p&gt;if you want to sort a nested column, for example, An Employee object has a Company object inside it that if you wish to sort the employee using company name then you need to set the column value as &amp;ldquo;company.name&amp;rdquo; of PaginationCriteria class.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;caveats&#34;&gt;Caveats&lt;/h3&gt;
+&lt;p&gt;The performance of in-memory pagination is fully dependent on the machine that uses. This plugin will really help when you have tens-of-thousands of data to show on your webpage with pagination.&lt;/p&gt;</description>
+     </item>
    
      <item>
        <title>Spring Boot Migration From 1.5 to 2.0.5</title>
@@ -276,14 +386,14 @@ imports
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Create a bootstarp.yml file under src/main/resources as follows&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;spring&lt;/span&gt;: 
-  &lt;span style=&#34;color:#66d9ef&#34;&gt;application&lt;/span&gt;: {&lt;span style=&#34;color:#66d9ef&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;testApplication&amp;#39;&lt;/span&gt;} 
-  &lt;span style=&#34;color:#66d9ef&#34;&gt;cloud&lt;/span&gt;:   
-   &lt;span style=&#34;color:#66d9ef&#34;&gt;consul&lt;/span&gt;:    
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;enabled&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;true&amp;#39;&lt;/span&gt;    
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;host&lt;/span&gt;: http://localhost    
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;port&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;8500&lt;/span&gt;    
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;discovery&lt;/span&gt;: {&lt;span style=&#34;color:#66d9ef&#34;&gt;healthCheckInterval&lt;/span&gt;: 300s}
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;spring&lt;/span&gt;: 
+  &lt;span style=&#34;color:#f92672&#34;&gt;application&lt;/span&gt;: {&lt;span style=&#34;color:#f92672&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;testApplication&amp;#39;&lt;/span&gt;} 
+  &lt;span style=&#34;color:#f92672&#34;&gt;cloud&lt;/span&gt;:   
+   &lt;span style=&#34;color:#f92672&#34;&gt;consul&lt;/span&gt;:    
+    &lt;span style=&#34;color:#f92672&#34;&gt;enabled&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;true&amp;#39;&lt;/span&gt;    
+    &lt;span style=&#34;color:#f92672&#34;&gt;host&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;http://localhost    &lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;port&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;8500&lt;/span&gt;    
+    &lt;span style=&#34;color:#f92672&#34;&gt;discovery&lt;/span&gt;: {&lt;span style=&#34;color:#f92672&#34;&gt;healthCheckInterval&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;300s}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The application name should match the folder name you created in Consul under the Config directory.&lt;/p&gt;
 &lt;/blockquote&gt;
