@@ -4,7 +4,7 @@
   
   <url>
     <loc>https://krish22.github.io/posts/</loc>
-    <lastmod>2020-09-25T00:00:00+00:00</lastmod>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -14,16 +14,61 @@
   
   <url>
     <loc>https://krish22.github.io/categories/</loc>
-    <lastmod>2020-09-25T00:00:00+00:00</lastmod>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://krish22.github.io/categories/coding/</loc>
-    <lastmod>2020-09-25T00:00:00+00:00</lastmod>
+    <loc>https://krish22.github.io/tags/consul/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://krish22.github.io/categories/development/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/posts/postman-keycloack/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/categories/keycloak/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/categories/postman/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/tags/spring/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/tags/springboot/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/tags/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/categories/testing/</loc>
+    <lastmod>2020-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krish22.github.io/categories/coding/</loc>
     <lastmod>2020-09-25T00:00:00+00:00</lastmod>
   </url>
   
@@ -38,22 +83,7 @@
   </url>
   
   <url>
-    <loc>https://krish22.github.io/</loc>
-    <lastmod>2020-09-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://krish22.github.io/tags/serversidepagination/</loc>
-    <lastmod>2020-09-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krish22.github.io/tags/springboot/</loc>
-    <lastmod>2020-09-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krish22.github.io/tags/</loc>
     <lastmod>2020-09-25T00:00:00+00:00</lastmod>
   </url>
   
@@ -63,18 +93,8 @@
   </url>
   
   <url>
-    <loc>https://krish22.github.io/tags/spring/</loc>
-    <lastmod>2020-07-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://krish22.github.io/posts/spring-boot-migration/</loc>
     <lastmod>2020-07-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krish22.github.io/tags/consul/</loc>
-    <lastmod>2020-07-04T00:00:00+00:00</lastmod>
   </url>
   
   <url>

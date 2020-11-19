@@ -6,10 +6,120 @@
    <description>Recent content in consul on Krishnan</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp;copy; 2020 - Krishnan</copyright>
-   <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate>
+   <lastBuildDate>Thu, 19 Nov 2020 00:00:00 +0000</lastBuildDate>
    
        <atom:link href="https://krish22.github.io/tags/consul/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Get Access Token Using Postman from Keycloak</title>
+       <link>https://krish22.github.io/posts/postman-keycloack/</link>
+       <pubDate>Thu, 19 Nov 2020 00:00:00 +0000</pubDate>
+       
+       <guid>https://krish22.github.io/posts/postman-keycloack/</guid>
+       <description>&lt;p&gt;This post will help you to automate getting access token from keycloak and added into request param before each API hits server.&lt;/p&gt;
+&lt;h2 id=&#34;to-get-access-token-using-postman-for-testing&#34;&gt;To Get Access Token Using Postman (For Testing)&lt;/h2&gt;
+&lt;h3 id=&#34;create-new-collection-in-postman&#34;&gt;Create new Collection in postman&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Click new collection button in postman&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Select variable tab and add the below variables&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;client_id : &amp;lt;&lt;em&gt;Copy the client id from your realm setting in KC&lt;/em&gt;&amp;gt;&lt;/li&gt;
+&lt;li&gt;client_secret : &amp;lt;&lt;em&gt;Make sure you copy the right secrets for the client&lt;/em&gt;&amp;gt;&lt;/li&gt;
+&lt;li&gt;scope  : &lt;em&gt;type &amp;lsquo;openid&amp;rsquo;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;token_endpoint : &amp;lt;&lt;em&gt;http://&lt;strong&gt;KEYCLOAK-SERVER_URL&lt;/strong&gt;/auth/realms/&lt;strong&gt;REPLACE_WITH_YOUR_REALM_NAME&lt;/strong&gt;/protocol/openid-connect/token&lt;/em&gt;&amp;gt;&lt;/li&gt;
+&lt;li&gt;access_token : &amp;lt;&lt;em&gt;Leave it blank, this will be populated by pre-request script&lt;/em&gt;&amp;gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-variable.JPG&#34; alt=&#34;variable&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Go to authorization tab&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Select Type = Bearer Token&lt;/li&gt;
+&lt;li&gt;Token = {{access_token}} &lt;em&gt;&lt;!-- raw HTML omitted --&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-auth.JPG&#34; alt=&#34;authorization&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now to pre-request scripts tab and paste the following code&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client_id&lt;/span&gt;      &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;collectionVariables&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;client_id&amp;#34;&lt;/span&gt;);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client_secret&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;collectionVariables&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;client_secret&amp;#34;&lt;/span&gt;);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;token_endpoint&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;collectionVariables&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;token_endpoint&amp;#34;&lt;/span&gt;);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;scope&lt;/span&gt;          &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;collectionVariables&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;scope&amp;#34;&lt;/span&gt;);
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;details&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;grant_type&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;client_credentials&amp;#34;&lt;/span&gt;,
+   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;scope&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;scope&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;formBody&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [];
+&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;property&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;details&lt;/span&gt;) {
+ &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;encodedKey&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; encodeURIComponent(&lt;span style=&#34;color:#a6e22e&#34;&gt;property&lt;/span&gt;);
+ &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;encodedValue&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; encodeURIComponent(&lt;span style=&#34;color:#a6e22e&#34;&gt;details&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;property&lt;/span&gt;]);
+ &lt;span style=&#34;color:#a6e22e&#34;&gt;formBody&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;push&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;encodedKey&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;=&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;encodedValue&lt;/span&gt;);
+}
+&lt;span style=&#34;color:#a6e22e&#34;&gt;formBody&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;formBody&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;join&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;amp;&amp;#34;&lt;/span&gt;);
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;pm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;sendRequest&lt;/span&gt;({
+   &lt;span style=&#34;color:#a6e22e&#34;&gt;url&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;token_endpoint&lt;/span&gt;,
+   &lt;span style=&#34;color:#a6e22e&#34;&gt;method&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;,
+   &lt;span style=&#34;color:#a6e22e&#34;&gt;header&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; {
+       &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Content-Type&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;application/x-www-form-urlencoded&amp;#39;&lt;/span&gt;,
+       &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Authorization&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Basic &amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;btoa&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;client_id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;:&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;client_secret&lt;/span&gt;)
+         },
+     &lt;span style=&#34;color:#a6e22e&#34;&gt;body&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;formBody&lt;/span&gt;
+},  &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;response&lt;/span&gt;) {
+ &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;jsonResponse&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;response&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;json&lt;/span&gt;();
+ &lt;span style=&#34;color:#a6e22e&#34;&gt;console&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;jsonResponse&lt;/span&gt;);
+ &lt;span style=&#34;color:#a6e22e&#34;&gt;pm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;collectionVariables&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;set&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;access_token&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;jsonResponse&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;access_token&lt;/span&gt;);
+ &lt;span style=&#34;color:#a6e22e&#34;&gt;console&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;pm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;collectionVariables&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;access_token&amp;#34;&lt;/span&gt;));
+
+}); 
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;This code will get a new token from keycloak and extract the access_token from response
+and set into a collection variable {{access_token}}&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now, save your collections&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;create-new-request&#34;&gt;Create new Request&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Create a new request&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Select Authorization tab&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Select Type = Inherit auth from parent&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-pre-request-script.JPG&#34; alt=&#34;Pre request scripts&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add your headers, request body if any&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Make sure you save the request under the collection that you created above&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now try running the script.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;key-points&#34;&gt;Key Points&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;This script will be executed before each request in this collection and attach the access_token
+to the request.&lt;/li&gt;
+&lt;/ul&gt;</description>
+     </item>
    
      <item>
        <title>In Memory Server side pagination</title>
