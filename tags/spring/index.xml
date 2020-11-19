@@ -44,7 +44,7 @@
 &lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-auth.JPG&#34; alt=&#34;authorization&#34;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Now to pre-request scripts tab and paste the following code&lt;/p&gt;
+&lt;p&gt;Now go to pre-request scripts tab and paste the following code&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client_id&lt;/span&gt;      &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;collectionVariables&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;client_id&amp;#34;&lt;/span&gt;);
@@ -81,7 +81,8 @@
 
 }); 
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-pre-request-script.JPG&#34; alt=&#34;Pre request scripts&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;This code will get a new token from keycloak and extract the access_token from response
 and set into a collection variable {{access_token}}&lt;/p&gt;
@@ -101,7 +102,7 @@ and set into a collection variable {{access_token}}&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Select Type = Inherit auth from parent&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-pre-request-script.JPG&#34; alt=&#34;Pre request scripts&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-request.JPG&#34; alt=&#34;Pre request scripts&#34;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Add your headers, request body if any&lt;/p&gt;
