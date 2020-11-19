@@ -33,7 +33,7 @@
 &lt;li&gt;token_endpoint : &amp;lt;&lt;em&gt;http://&lt;strong&gt;KEYCLOAK-SERVER_URL&lt;/strong&gt;/auth/realms/&lt;strong&gt;REPLACE_WITH_YOUR_REALM_NAME&lt;/strong&gt;/protocol/openid-connect/token&lt;/em&gt;&amp;gt;&lt;/li&gt;
 &lt;li&gt;access_token : &amp;lt;&lt;em&gt;Leave it blank, this will be populated by pre-request script&lt;/em&gt;&amp;gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-variable.JPG&#34; alt=&#34;variable&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-variable.jpg&#34; alt=&#34;variable&#34;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Go to authorization tab&lt;/p&gt;
