@@ -102,7 +102,7 @@ and set into a collection variable {{access_token}}&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Select Type = Inherit auth from parent&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-request.JPG&#34; alt=&#34;Pre request scripts&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-request.JPG&#34; alt=&#34;Sample Request&#34;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Add your headers, request body if any&lt;/p&gt;
