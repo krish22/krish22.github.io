@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Keep Your Secrets Away From Code (Consul &#43; Spring)"/>
 <meta name="twitter:description" content="This post will walk you through the Consul cloud security platform, and how to integrate it with your Spring application."/>
 
-<meta name="generator" content="Hugo 0.77.0" />
+<meta name="generator" content="Hugo 0.74.1" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -270,14 +270,14 @@ imports
 </code></pre></div></li>
 <li>
 <p>Create a bootstarp.yml file under src/main/resources as follows</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">spring</span>: 
-  <span style="color:#f92672">application</span>: {<span style="color:#f92672">name</span>: <span style="color:#e6db74">&#39;testApplication&#39;</span>} 
-  <span style="color:#f92672">cloud</span>:   
-   <span style="color:#f92672">consul</span>:    
-    <span style="color:#f92672">enabled</span>: <span style="color:#e6db74">&#39;true&#39;</span>    
-    <span style="color:#f92672">host</span>: <span style="color:#ae81ff">http://localhost    </span>
-    <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8500</span>    
-    <span style="color:#f92672">discovery</span>: {<span style="color:#f92672">healthCheckInterval</span>: <span style="color:#ae81ff">300s}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">spring</span>: 
+  <span style="color:#66d9ef">application</span>: {<span style="color:#66d9ef">name</span>: <span style="color:#e6db74">&#39;testApplication&#39;</span>} 
+  <span style="color:#66d9ef">cloud</span>:   
+   <span style="color:#66d9ef">consul</span>:    
+    <span style="color:#66d9ef">enabled</span>: <span style="color:#e6db74">&#39;true&#39;</span>    
+    <span style="color:#66d9ef">host</span>: http://localhost    
+    <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">8500</span>    
+    <span style="color:#66d9ef">discovery</span>: {<span style="color:#66d9ef">healthCheckInterval</span>: 300s}
 </code></pre></div><blockquote>
 <p><strong>Note:</strong> The application name should match the folder name you created in Consul under the Config directory.</p>
 </blockquote>
