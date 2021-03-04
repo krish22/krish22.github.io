@@ -1,0 +1,369 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Krishnan</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="A blog for technical and non techinal writings." />
+<meta name="author" content="Krishnan" /><meta property="og:title" content="Basic working principle of Kerberos" />
+<meta property="og:description" content="This post explains you about how the kerberos works internally" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://krish22.github.io/posts/kerberos-principle/" />
+<meta property="article:published_time" content="2021-03-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-03-04T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Basic working principle of Kerberos"/>
+<meta name="twitter:description" content="This post explains you about how the kerberos works internally"/>
+
+<meta name="generator" content="Hugo 0.74.1" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://krish22.github.io/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://krish22.github.io/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://krish22.github.io/">Krishnan</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/krish22" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://twitter.com/krishnanvgp" title="Twitter">
+               <i class="fab fa-twitter fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://stackoverflow.com/users/2425514/krishnan" title="StackOverflow">
+               <i class="fab fa-stack-overflow fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Software Developer</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://krish22.github.io/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://krish22.github.io/tags">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://krish22.github.io/categories">
+                <i class="fa-li fa  fa-lg"></i><span>Categories</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://krish22.github.io/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Basic working principle of Kerberos</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2021-03-04T00:00:00Z">Mar 4, 2021</time>
+        </li>
+        
+        <li>
+            Categories:
+            <em>
+                
+                    
+                    <a href="https://krish22.github.io/categories/development">Development</a>
+                
+                    , 
+                    <a href="https://krish22.github.io/categories/kerberos">Kerberos</a>
+                
+                    , 
+                    <a href="https://krish22.github.io/categories/oauth">OAuth</a>
+                
+                    , 
+                    <a href="https://krish22.github.io/categories/authenticaion">Authenticaion</a>
+                
+            </em>
+        </li>
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="https://krish22.github.io/tags/kerberos">#Kerberos</a>
+                
+                    , 
+                    <a href="https://krish22.github.io/tags/authenticaion">#Authenticaion</a>
+                
+            </em>
+        </li>
+        
+
+        <li>7 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+<div class="featured_image">
+    <a href="https://krish22.github.io/posts/kerberos-principle/" title="Basic working principle of Kerberos">
+        <img src="">
+    </a>
+</div>
+
+
+
+    <p>Kerberos is a computer-network authentication protocol that works on the basis of tickets to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Kerberos is a computer-network authentication protocol that works on the basis of tickets to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner.</p>
+<p>Kerberos builds on symmetric key cryptography and requires a trusted third party.</p>
+<p>Kerberos uses UDP port 88 by default.</p>
+<h2 id="architecture">Architecture</h2>
+<ul>
+<li>Client ( C ): An entity which wants to make use of any service hosted on a server.</li>
+<li>Server (V): An entity which hosts different services which clients request for.</li>
+<li>Authentication Server (AS): A trusted Third Party which knows the passwords of all users and stores these in a centralized database. Also, the AS shares a unique secret key with each server. It shares a key Kcs with C, a key
+Kvs with V and generates new session keys Kcv.</li>
+<li>Ticket Granting Server (TGS): TGS, issues tickets to clients who have been authenticated to AS. Thus, the client first requests a ticket-granting ticket (Tickettgs) from the AS. The client module saves this ticket. Each time the user requires access to a new service, the client applies to the TGS, using the ticket to authenticate itself. The TGS then grants a ticket for the particular service. The client saves each service-granting ticket and uses it to authenticate its user to a server each time a particular service is requested.</li>
+</ul>
+<p><img src="https://krish22.github.io/images/KerberosArchitecture.jpg" alt="Kerberos Arch"></p>
+<h3 id="client-authentication">Client Authentication</h3>
+<ul>
+<li>The client sends a cleartext message of the user ID to the AS (Authentication Server) requesting services on behalf of the user. (Note: Neither the secret key nor the password is sent to the AS.)</li>
+<li>The AS checks to see if the client is in its database. If it is, the AS generates the secret key by hashing the password of the user found at the database (e.g., Active Directory in Windows Server) and sends back the following two messages to the client:
+<ul>
+<li>Message A: Client/TGS Session Key encrypted using the secret key of the client/user.</li>
+<li>Message B: Ticket-Granting-Ticket (TGT, which includes the client ID, client network address, ticket validity period, and the client/TGS session key) encrypted using the secret key of the TGS.</li>
+</ul>
+</li>
+<li>Once the client receives messages A and B, it attempts to decrypt message A with the secret key generated from the password entered by the user. If the user entered password does not match the password in the AS database, the client&rsquo;s secret key will be different and thus unable to decrypt message A.</li>
+<li>With a valid password and secret key the client decrypts message A to obtain the Client/TGS Session Key. This session key is used for further communications with the TGS. (Note: The client cannot decrypt Message B, as it is encrypted using TGS&rsquo;s secret key.) At this point, the client has enough information to authenticate itself to the TGS.</li>
+</ul>
+<blockquote>
+<p>A hashed client password is used to decrypt the message A from Authentication Server(AS) at client machine</p>
+</blockquote>
+<h3 id="client-service-authorization">Client Service Authorization</h3>
+<ul>
+<li>When requesting services, the client sends the following messages to the TGS:
+<ul>
+<li>Message C: Composed of the TGT from message B and the ID of the requested service.</li>
+<li>Message D: Authenticator (which is composed of the client ID and the timestamp), encrypted using the Client/TGS Session Key.</li>
+</ul>
+</li>
+<li>Upon receiving messages C and D, the TGS retrieves message B out of message C. It decrypts message B using the TGS secret key. This gives it the &ldquo;client/TGS session key&rdquo;. Using this key, the TGS decrypts message D (Authenticator) and compare client ID from message C and D, if they match server sends the following two messages to the client:
+<ul>
+<li>Message E: Client-to-server ticket (which includes the client ID, client network address, validity period and Client/Server Session Key) encrypted using the service&rsquo;s secret key.</li>
+<li>Message F: Client/Server Session Key encrypted with the Client/TGS Session Key.</li>
+</ul>
+</li>
+</ul>
+<h3 id="client-service-request">Client Service Request</h3>
+<ul>
+<li>Upon receiving messages E and F from TGS, the client has enough information to authenticate itself to the Service Server (SS). The client connects to the SS and sends the following two messages:
+<ul>
+<li>Message E: from the previous step (the client-to-server ticket, encrypted using service&rsquo;s secret key).</li>
+<li>Message G: a new Authenticator, which includes the client ID, timestamp and is encrypted using Client/Server Session Key.</li>
+</ul>
+</li>
+<li>The V decrypts the ticket (message E) using its own secret key to retrieve the Client/Server Session Key. Using the sessions key, SS decrypts the Authenticator and compares client ID from messages E and G, if they match server sends the following message to the client to confirm its true identity and willingness to serve the client:
+<ul>
+<li>Message H: the timestamp found in client&rsquo;s Authenticator (plus 1 in version 4, but not necessary in version 5[6][7]), encrypted using the Client/Server Session Key.</li>
+</ul>
+</li>
+<li>The client decrypts the confirmation (message H) using the Client/Server Session Key and checks whether the timestamp is correct. If so, then the client can trust the server and can start issuing service requests to the server.</li>
+<li>The server provides the requested services to the client.</li>
+</ul>
+<h2 id="kerberos-message-exchange">Kerberos Message Exchange</h2>
+<p>This will explain how and what are the messages are exchanging between the client and KDC to get the authentication ticket to server</p>
+<p><img src="https://krish22.github.io/images/KerberosMessageExchangeFlowDiagram.jpg" alt="Kerberos Flow Diagram"></p>
+<ol>
+<li>
+<p>C → AS :</p>
+<p>Below is the message that sends from client to AS</p>
+<p>C || TGS<sub>ID</sub> || TS<sub>1</sub></p>
+<p>In this message, the client requests a ticket-granting ticket by sending its identity and password to the AS, together with the identity of TGS, indicating a request to use the TGS service and a time stamp, so that the AS knows that the message is timely.</p>
+</li>
+<li>
+<p>AS → C :</p>
+<p>Below is the message that sends back from AS to C</p>
+<p>E(K<sub>c</sub>, [K<sub>c,tgs</sub> || TGS<sub>ID</sub>|| TS<sub>2</sub> || Lifetime2 || Ticket<sub>tgs</sub> ])</p>
+<p>Ticket<sub>tgs</sub> = E(K<sub>tgs</sub>, [K<sub>c,tgs</sub> || C || AD<sub>c</sub> || TGS<sub>ID</sub> || TS<sub>2</sub> || Lifetime2])</p>
+<p>The AS responds with a message, encrypted with a key derived from the user’s password that contains the ticket requested by client. This message also contains session key K<sub>c,tgs</sub> to be shared between TGS and Client. The
+client retrieves this key.
+The ticket is encrypted with TGS’s key K<sub>tgs</sub> which is
+already shared with AS. The ticket contains session key
+K<sub>c,tgs</sub> which is retrieved by TGS. Like this, the session
+key has been securely delivered to both C and the TGS.
+The ticket also contains ADc (Network Address of client)
+which prevents the use of ticket from workstation other
+than one that initially requested the ticket.</p>
+</li>
+<li>
+<p>C → TGS :</p>
+<p>Below is the message that sends from client to TGS</p>
+<p>V || Ticket<sub>tgs</sub> || Authenticator<sub>c</sub></p>
+<p>Authenticator<sub>c</sub> = E(K<sub>c,tgs</sub>[C||AD<sub>c</sub>||TS3])</p>
+<p>The client sends message to TGS stating the identification of the requested service V, Ticket<sub>tgs</sub>, an authenticator which includes the identity of client C, address of Client AD<sub>c</sub> and a time stamp. The authenticator is intended for use only once and has a very short lifetime. The TGS  can decrypt the ticket with the key that it shares with the
+AS. The TGS uses the session key Kc,tgs to decrypt the authenticator. The TGS can then check the identity and   address from the authenticator with that of the ticket and
+with the network address of the incoming message. If all match, then the TGS is assured that the sender of the ticket is indeed the ticket’s real owner.</p>
+</li>
+<li>
+<p>TGS → C :</p>
+<p>Below is the message that sends back from TGS to Client</p>
+<p>E(K<sub>c,tgs</sub>[K<sub>c,v</sub>|| V ||TS<sub>4</sub> ||Ticket<sub>v</sub>])</p>
+<p>Ticket<sub>v</sub> = E(K<sub>v</sub>[K<sub>c,v</sub>||C||AD<sub>c</sub>||V||TS4||Lifetime4])</p>
+<p>The TGS then sends C above message as a response to request. This message is encrypted by session key shared between TGS and client and includes a session key to be shared between Client and the server V, the identification of V, and the time stamp of the ticket. The ticket also includes session key to be shared between client and server V,and it is encrypted with V’s key KV.</p>
+</li>
+<li>
+<p>C → V :</p>
+<p>Below is the message that sends from client to Resource Server (v)</p>
+<p>Ticket<sub>v</sub>||Authenticator</sub>c</sub></p>
+<p>Authenticator<sub>c</sub> = E(K<sub>c,v</sub>[C||AD<sub>c</sub>||TS5])</p>
+<p>In this message the client sends the ticket received by TGS to server V. Client also sends an authenticator. The server can decrypt the ticket, recover the session key, and decrypt
+the authenticator.</p>
+</li>
+<li>
+<p>V → C :</p>
+<p>E(K<sub>c,v</sub>[TS5+1])</p>
+<p>The server V sends the value of the time stamp from the authenticator, incremented by 1, encrypted in the session key K<sub>c,v</sub>. C can decrypt this message to recover the incremented time stamp. Because the message was
+encrypted by the session key, C is assured that it could have been created only by V.</p>
+</li>
+</ol>
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://krish22.github.io/posts/postman-keycloack/"><i class="fa fa-chevron-circle-left"></i> Get Access Token from Keycloak using Postman</a>
+        </li>
+        
+        
+    </ul>
+</section>
+  
+    
+    
+        <section class="comments-block">
+      <button id="show-comments" style="display: none;"><i class="fa fa-comments"></i> Add/View Comments</button>
+</section>
+
+<section id="disqus_thread"></section>
+
+<script>
+      (function () {
+            
+            
+            if (window.location.hostname == "localhost")
+                  return;
+
+            var disqus_loaded = false;
+            var disqus_shortname = 'kris22-github-io';
+            var disqus_button = document.getElementById("show-comments");
+
+            var disqus_autoload =  true ;
+            var disable_comment =  null ;
+
+            if (disable_comment)
+                  return;
+
+            disqus_button.style.display = "";
+
+            if (disqus_autoload){
+                  disqus();
+            }else{
+                  disqus_button.addEventListener("click", disqus, false);
+            }
+
+            function disqus() {
+
+                  if (!disqus_loaded) {
+                        disqus_loaded = true;
+
+                        var e = document.createElement("script");
+                        e.type = "text/javascript";
+                        e.async = true;
+                        e.src = "//" + disqus_shortname + ".disqus.com/embed.js";
+                        (document.getElementsByTagName("head")[0] ||
+                              document.getElementsByTagName("body")[0])
+                        .appendChild(e);
+
+                        
+                        document.getElementById("show-comments").style.display = "none";
+                  }
+            }
+
+            
+            var hash = window.location.hash.substr(1);
+            if (hash.length > 8) {
+                  if (hash.substring(0, 8) == "comment-") {
+                        disqus();
+                  }
+            }
+
+            
+            if (/bot|google|baidu|bing|msn|duckduckgo|slurp|yandex/i.test(navigator.userAgent)) {
+                  disqus();
+            }
+      })();
+</script>
+
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright © 2020 - Krishnan </h6>
+    </footer>
+</div>
+<script src="https://krish22.github.io/js/scripts.js"></script>
+
+</body>
+
+</html>
+
