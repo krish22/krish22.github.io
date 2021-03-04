@@ -6,10 +6,134 @@
    <description>Recent content in Tags on Krishnan</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp;copy; 2020 - Krishnan</copyright>
-   <lastBuildDate>Thu, 19 Nov 2020 00:00:00 +0000</lastBuildDate>
+   <lastBuildDate>Thu, 04 Mar 2021 00:00:00 +0000</lastBuildDate>
    
        <atom:link href="https://krish22.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Basic working principle of Kerberos</title>
+       <link>https://krish22.github.io/posts/kerberos-principle/</link>
+       <pubDate>Thu, 04 Mar 2021 00:00:00 +0000</pubDate>
+       
+       <guid>https://krish22.github.io/posts/kerberos-principle/</guid>
+       <description>&lt;p&gt;Kerberos is a computer-network authentication protocol that works on the basis of tickets to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner.&lt;/p&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Kerberos is a computer-network authentication protocol that works on the basis of tickets to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner.&lt;/p&gt;
+&lt;p&gt;Kerberos builds on symmetric key cryptography and requires a trusted third party.&lt;/p&gt;
+&lt;p&gt;Kerberos uses UDP port 88 by default.&lt;/p&gt;
+&lt;h2 id=&#34;architecture&#34;&gt;Architecture&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Client ( C ): An entity which wants to make use of any service hosted on a server.&lt;/li&gt;
+&lt;li&gt;Server (V): An entity which hosts different services which clients request for.&lt;/li&gt;
+&lt;li&gt;Authentication Server (AS): A trusted Third Party which knows the passwords of all users and stores these in a centralized database. Also, the AS shares a unique secret key with each server. It shares a key Kcs with C, a key
+Kvs with V and generates new session keys Kcv.&lt;/li&gt;
+&lt;li&gt;Ticket Granting Server (TGS): TGS, issues tickets to clients who have been authenticated to AS. Thus, the client first requests a ticket-granting ticket (Tickettgs) from the AS. The client module saves this ticket. Each time the user requires access to a new service, the client applies to the TGS, using the ticket to authenticate itself. The TGS then grants a ticket for the particular service. The client saves each service-granting ticket and uses it to authenticate its user to a server each time a particular service is requested.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/KerberosArchitecture.jpg&#34; alt=&#34;Kerberos Arch&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;client-authentication&#34;&gt;Client Authentication&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;The client sends a cleartext message of the user ID to the AS (Authentication Server) requesting services on behalf of the user. (Note: Neither the secret key nor the password is sent to the AS.)&lt;/li&gt;
+&lt;li&gt;The AS checks to see if the client is in its database. If it is, the AS generates the secret key by hashing the password of the user found at the database (e.g., Active Directory in Windows Server) and sends back the following two messages to the client:
+&lt;ul&gt;
+&lt;li&gt;Message A: Client/TGS Session Key encrypted using the secret key of the client/user.&lt;/li&gt;
+&lt;li&gt;Message B: Ticket-Granting-Ticket (TGT, which includes the client ID, client network address, ticket validity period, and the client/TGS session key) encrypted using the secret key of the TGS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Once the client receives messages A and B, it attempts to decrypt message A with the secret key generated from the password entered by the user. If the user entered password does not match the password in the AS database, the client&amp;rsquo;s secret key will be different and thus unable to decrypt message A.&lt;/li&gt;
+&lt;li&gt;With a valid password and secret key the client decrypts message A to obtain the Client/TGS Session Key. This session key is used for further communications with the TGS. (Note: The client cannot decrypt Message B, as it is encrypted using TGS&amp;rsquo;s secret key.) At this point, the client has enough information to authenticate itself to the TGS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A hashed client password is used to decrypt the message A from Authentication Server(AS) at client machine&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;client-service-authorization&#34;&gt;Client Service Authorization&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;When requesting services, the client sends the following messages to the TGS:
+&lt;ul&gt;
+&lt;li&gt;Message C: Composed of the TGT from message B and the ID of the requested service.&lt;/li&gt;
+&lt;li&gt;Message D: Authenticator (which is composed of the client ID and the timestamp), encrypted using the Client/TGS Session Key.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Upon receiving messages C and D, the TGS retrieves message B out of message C. It decrypts message B using the TGS secret key. This gives it the &amp;ldquo;client/TGS session key&amp;rdquo;. Using this key, the TGS decrypts message D (Authenticator) and compare client ID from message C and D, if they match server sends the following two messages to the client:
+&lt;ul&gt;
+&lt;li&gt;Message E: Client-to-server ticket (which includes the client ID, client network address, validity period and Client/Server Session Key) encrypted using the service&amp;rsquo;s secret key.&lt;/li&gt;
+&lt;li&gt;Message F: Client/Server Session Key encrypted with the Client/TGS Session Key.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;client-service-request&#34;&gt;Client Service Request&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Upon receiving messages E and F from TGS, the client has enough information to authenticate itself to the Service Server (SS). The client connects to the SS and sends the following two messages:
+&lt;ul&gt;
+&lt;li&gt;Message E: from the previous step (the client-to-server ticket, encrypted using service&amp;rsquo;s secret key).&lt;/li&gt;
+&lt;li&gt;Message G: a new Authenticator, which includes the client ID, timestamp and is encrypted using Client/Server Session Key.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;The V decrypts the ticket (message E) using its own secret key to retrieve the Client/Server Session Key. Using the sessions key, SS decrypts the Authenticator and compares client ID from messages E and G, if they match server sends the following message to the client to confirm its true identity and willingness to serve the client:
+&lt;ul&gt;
+&lt;li&gt;Message H: the timestamp found in client&amp;rsquo;s Authenticator (plus 1 in version 4, but not necessary in version 5[6][7]), encrypted using the Client/Server Session Key.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;The client decrypts the confirmation (message H) using the Client/Server Session Key and checks whether the timestamp is correct. If so, then the client can trust the server and can start issuing service requests to the server.&lt;/li&gt;
+&lt;li&gt;The server provides the requested services to the client.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;kerberos-message-exchange&#34;&gt;Kerberos Message Exchange&lt;/h2&gt;
+&lt;p&gt;This will explain how and what are the messages are exchanging between the client and KDC to get the authentication ticket to server&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/KerberosMessageExchangeFlowDiagram.jpg&#34; alt=&#34;Kerberos Flow Diagram&#34;&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;C → AS :&lt;/p&gt;
+&lt;p&gt;Below is the message that sends from client to AS&lt;/p&gt;
+&lt;p&gt;C || TGS&lt;sub&gt;ID&lt;/sub&gt; || TS&lt;sub&gt;1&lt;/sub&gt;&lt;/p&gt;
+&lt;p&gt;In this message, the client requests a ticket-granting ticket by sending its identity and password to the AS, together with the identity of TGS, indicating a request to use the TGS service and a time stamp, so that the AS knows that the message is timely.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;AS → C :&lt;/p&gt;
+&lt;p&gt;Below is the message that sends back from AS to C&lt;/p&gt;
+&lt;p&gt;E(K&lt;sub&gt;c&lt;/sub&gt;, [K&lt;sub&gt;c,tgs&lt;/sub&gt; || TGS&lt;sub&gt;ID&lt;/sub&gt;|| TS&lt;sub&gt;2&lt;/sub&gt; || Lifetime2 || Ticket&lt;sub&gt;tgs&lt;/sub&gt; ])&lt;/p&gt;
+&lt;p&gt;Ticket&lt;sub&gt;tgs&lt;/sub&gt; = E(K&lt;sub&gt;tgs&lt;/sub&gt;, [K&lt;sub&gt;c,tgs&lt;/sub&gt; || C || AD&lt;sub&gt;c&lt;/sub&gt; || TGS&lt;sub&gt;ID&lt;/sub&gt; || TS&lt;sub&gt;2&lt;/sub&gt; || Lifetime2])&lt;/p&gt;
+&lt;p&gt;The AS responds with a message, encrypted with a key derived from the user’s password that contains the ticket requested by client. This message also contains session key K&lt;sub&gt;c,tgs&lt;/sub&gt; to be shared between TGS and Client. The
+client retrieves this key.
+The ticket is encrypted with TGS’s key K&lt;sub&gt;tgs&lt;/sub&gt; which is
+already shared with AS. The ticket contains session key
+K&lt;sub&gt;c,tgs&lt;/sub&gt; which is retrieved by TGS. Like this, the session
+key has been securely delivered to both C and the TGS.
+The ticket also contains ADc (Network Address of client)
+which prevents the use of ticket from workstation other
+than one that initially requested the ticket.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C → TGS :&lt;/p&gt;
+&lt;p&gt;Below is the message that sends from client to TGS&lt;/p&gt;
+&lt;p&gt;V || Ticket&lt;sub&gt;tgs&lt;/sub&gt; || Authenticator&lt;sub&gt;c&lt;/sub&gt;&lt;/p&gt;
+&lt;p&gt;Authenticator&lt;sub&gt;c&lt;/sub&gt; = E(K&lt;sub&gt;c,tgs&lt;/sub&gt;[C||AD&lt;sub&gt;c&lt;/sub&gt;||TS3])&lt;/p&gt;
+&lt;p&gt;The client sends message to TGS stating the identification of the requested service V, Ticket&lt;sub&gt;tgs&lt;/sub&gt;, an authenticator which includes the identity of client C, address of Client AD&lt;sub&gt;c&lt;/sub&gt; and a time stamp. The authenticator is intended for use only once and has a very short lifetime. The TGS  can decrypt the ticket with the key that it shares with the
+AS. The TGS uses the session key Kc,tgs to decrypt the authenticator. The TGS can then check the identity and   address from the authenticator with that of the ticket and
+with the network address of the incoming message. If all match, then the TGS is assured that the sender of the ticket is indeed the ticket’s real owner.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;TGS → C :&lt;/p&gt;
+&lt;p&gt;Below is the message that sends back from TGS to Client&lt;/p&gt;
+&lt;p&gt;E(K&lt;sub&gt;c,tgs&lt;/sub&gt;[K&lt;sub&gt;c,v&lt;/sub&gt;|| V ||TS&lt;sub&gt;4&lt;/sub&gt; ||Ticket&lt;sub&gt;v&lt;/sub&gt;])&lt;/p&gt;
+&lt;p&gt;Ticket&lt;sub&gt;v&lt;/sub&gt; = E(K&lt;sub&gt;v&lt;/sub&gt;[K&lt;sub&gt;c,v&lt;/sub&gt;||C||AD&lt;sub&gt;c&lt;/sub&gt;||V||TS4||Lifetime4])&lt;/p&gt;
+&lt;p&gt;The TGS then sends C above message as a response to request. This message is encrypted by session key shared between TGS and client and includes a session key to be shared between Client and the server V, the identification of V, and the time stamp of the ticket. The ticket also includes session key to be shared between client and server V,and it is encrypted with V’s key KV.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;C → V :&lt;/p&gt;
+&lt;p&gt;Below is the message that sends from client to Resource Server (v)&lt;/p&gt;
+&lt;p&gt;Ticket&lt;sub&gt;v&lt;/sub&gt;||Authenticator&lt;/sub&gt;c&lt;/sub&gt;&lt;/p&gt;
+&lt;p&gt;Authenticator&lt;sub&gt;c&lt;/sub&gt; = E(K&lt;sub&gt;c,v&lt;/sub&gt;[C||AD&lt;sub&gt;c&lt;/sub&gt;||TS5])&lt;/p&gt;
+&lt;p&gt;In this message the client sends the ticket received by TGS to server V. Client also sends an authenticator. The server can decrypt the ticket, recover the session key, and decrypt
+the authenticator.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;V → C :&lt;/p&gt;
+&lt;p&gt;E(K&lt;sub&gt;c,v&lt;/sub&gt;[TS5+1])&lt;/p&gt;
+&lt;p&gt;The server V sends the value of the time stamp from the authenticator, incremented by 1, encrypted in the session key K&lt;sub&gt;c,v&lt;/sub&gt;. C can decrypt this message to recover the incremented time stamp. Because the message was
+encrypted by the session key, C is assured that it could have been created only by V.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
+     </item>
    
      <item>
        <title>Get Access Token from Keycloak using Postman</title>
@@ -39,7 +163,7 @@
 &lt;p&gt;Go to authorization tab&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Select Type = Bearer Token&lt;/li&gt;
-&lt;li&gt;Token = {{access_token}} &lt;em&gt;&lt;!-- raw HTML omitted --&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Token = {{access_token}} &lt;em&gt;&lt;This is the variable we defined in above&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/postman-auth.JPG&#34; alt=&#34;authorization&#34;&gt;&lt;/p&gt;
 &lt;/li&gt;
@@ -120,130 +244,6 @@ and set into a collection variable {{access_token}}&lt;/p&gt;
 &lt;li&gt;This script will be executed before each request in this collection and attach the access_token
 to the request.&lt;/li&gt;
 &lt;/ul&gt;</description>
-     </item>
-   
-     <item>
-       <title>Basic working principle of Kerberos</title>
-       <link>https://krish22.github.io/posts/kerberos-principle/</link>
-       <pubDate>Fri, 25 Sep 2020 00:00:00 +0000</pubDate>
-       
-       <guid>https://krish22.github.io/posts/kerberos-principle/</guid>
-       <description>&lt;p&gt;Kerberos is a computer-network authentication protocol that works on the basis of tickets to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner.&lt;/p&gt;
-&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;Kerberos is a computer-network authentication protocol that works on the basis of tickets to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner.&lt;/p&gt;
-&lt;p&gt;Kerberos builds on symmetric key cryptography and requires a trusted third party.&lt;/p&gt;
-&lt;p&gt;Kerberos uses UDP port 88 by default.&lt;/p&gt;
-&lt;h2 id=&#34;architecture&#34;&gt;Architecture&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Client ( C ): An entity which wants to make use of any service hosted on a server.&lt;/li&gt;
-&lt;li&gt;Server (V): An entity which hosts different services which clients request for.&lt;/li&gt;
-&lt;li&gt;Authentication Server (AS): A trusted Third Party which knows the passwords of all users and stores these in a centralized database. Also, the AS shares a unique secret key with each server. It shares a key Kcs with C, a key
-Kvs with V and generates new session keys Kcv.&lt;/li&gt;
-&lt;li&gt;Ticket Granting Server (TGS): TGS, issues tickets to clients who have been authenticated to AS. Thus, the client first requests a ticket-granting ticket (Tickettgs) from the AS. The client module saves this ticket. Each time the user requires access to a new service, the client applies to the TGS, using the ticket to authenticate itself. The TGS then grants a ticket for the particular service. The client saves each service-granting ticket and uses it to authenticate its user to a server each time a particular service is requested.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/KerberosArchitecture.jpg&#34; alt=&#34;Kerberos Arch&#34;&gt;&lt;/p&gt;
-&lt;h3 id=&#34;client-authentication&#34;&gt;Client Authentication&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;The client sends a cleartext message of the user ID to the AS (Authentication Server) requesting services on behalf of the user. (Note: Neither the secret key nor the password is sent to the AS.)&lt;/li&gt;
-&lt;li&gt;The AS checks to see if the client is in its database. If it is, the AS generates the secret key by hashing the password of the user found at the database (e.g., Active Directory in Windows Server) and sends back the following two messages to the client:
-&lt;ul&gt;
-&lt;li&gt;Message A: Client/TGS Session Key encrypted using the secret key of the client/user.&lt;/li&gt;
-&lt;li&gt;Message B: Ticket-Granting-Ticket (TGT, which includes the client ID, client network address, ticket validity period, and the client/TGS session key) encrypted using the secret key of the TGS.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Once the client receives messages A and B, it attempts to decrypt message A with the secret key generated from the password entered by the user. If the user entered password does not match the password in the AS database, the client&amp;rsquo;s secret key will be different and thus unable to decrypt message A.&lt;/li&gt;
-&lt;li&gt;With a valid password and secret key the client decrypts message A to obtain the Client/TGS Session Key. This session key is used for further communications with the TGS. (Note: The client cannot decrypt Message B, as it is encrypted using TGS&amp;rsquo;s secret key.) At this point, the client has enough information to authenticate itself to the TGS.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;A hashed client password is used to decrypt the message A from Authentication Server(AS) at client machine&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id=&#34;client-service-authorization&#34;&gt;Client Service Authorization&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;When requesting services, the client sends the following messages to the TGS:
-&lt;ul&gt;
-&lt;li&gt;Message C: Composed of the TGT from message B and the ID of the requested service.&lt;/li&gt;
-&lt;li&gt;Message D: Authenticator (which is composed of the client ID and the timestamp), encrypted using the Client/TGS Session Key.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Upon receiving messages C and D, the TGS retrieves message B out of message C. It decrypts message B using the TGS secret key. This gives it the &amp;ldquo;client/TGS session key&amp;rdquo;. Using this key, the TGS decrypts message D (Authenticator) and compare client ID from message C and D, if they match server sends the following two messages to the client:
-&lt;ul&gt;
-&lt;li&gt;Message E: Client-to-server ticket (which includes the client ID, client network address, validity period and Client/Server Session Key) encrypted using the service&amp;rsquo;s secret key.&lt;/li&gt;
-&lt;li&gt;Message F: Client/Server Session Key encrypted with the Client/TGS Session Key.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;client-service-request&#34;&gt;Client Service Request&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Upon receiving messages E and F from TGS, the client has enough information to authenticate itself to the Service Server (SS). The client connects to the SS and sends the following two messages:
-&lt;ul&gt;
-&lt;li&gt;Message E: from the previous step (the client-to-server ticket, encrypted using service&amp;rsquo;s secret key).&lt;/li&gt;
-&lt;li&gt;Message G: a new Authenticator, which includes the client ID, timestamp and is encrypted using Client/Server Session Key.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;The V decrypts the ticket (message E) using its own secret key to retrieve the Client/Server Session Key. Using the sessions key, SS decrypts the Authenticator and compares client ID from messages E and G, if they match server sends the following message to the client to confirm its true identity and willingness to serve the client:
-&lt;ul&gt;
-&lt;li&gt;Message H: the timestamp found in client&amp;rsquo;s Authenticator (plus 1 in version 4, but not necessary in version 5[6][7]), encrypted using the Client/Server Session Key.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;The client decrypts the confirmation (message H) using the Client/Server Session Key and checks whether the timestamp is correct. If so, then the client can trust the server and can start issuing service requests to the server.&lt;/li&gt;
-&lt;li&gt;The server provides the requested services to the client.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;kerberos-message-exchange&#34;&gt;Kerberos Message Exchange&lt;/h2&gt;
-&lt;p&gt;This will explain how and what are the messages are exchanging between the client and KDC to get the authentication ticket to server&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://krish22.github.io/images/KerberosMessageExchangeFlowDiagram.jpg&#34; alt=&#34;Kerberos Flow Diagram&#34;&gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;C → AS :&lt;/p&gt;
-&lt;p&gt;Below is the message that sends from client to AS&lt;/p&gt;
-&lt;p&gt;C || TGS&lt;!-- raw HTML omitted --&gt;ID&lt;!-- raw HTML omitted --&gt; || TS&lt;!-- raw HTML omitted --&gt;1&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;p&gt;In this message, the client requests a ticket-granting ticket by sending its identity and password to the AS, together with the identity of TGS, indicating a request to use the TGS service and a time stamp, so that the AS knows that the message is timely.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;AS → C :&lt;/p&gt;
-&lt;p&gt;Below is the message that sends back from AS to C&lt;/p&gt;
-&lt;p&gt;E(K&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt;, [K&lt;!-- raw HTML omitted --&gt;c,tgs&lt;!-- raw HTML omitted --&gt; || TGS&lt;!-- raw HTML omitted --&gt;ID&lt;!-- raw HTML omitted --&gt;|| TS&lt;!-- raw HTML omitted --&gt;2&lt;!-- raw HTML omitted --&gt; || Lifetime2 || Ticket&lt;!-- raw HTML omitted --&gt;tgs&lt;!-- raw HTML omitted --&gt; ])&lt;/p&gt;
-&lt;p&gt;Ticket&lt;!-- raw HTML omitted --&gt;tgs&lt;!-- raw HTML omitted --&gt; = E(K&lt;!-- raw HTML omitted --&gt;tgs&lt;!-- raw HTML omitted --&gt;, [K&lt;!-- raw HTML omitted --&gt;c,tgs&lt;!-- raw HTML omitted --&gt; || C || AD&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt; || TGS&lt;!-- raw HTML omitted --&gt;ID&lt;!-- raw HTML omitted --&gt; || TS&lt;!-- raw HTML omitted --&gt;2&lt;!-- raw HTML omitted --&gt; || Lifetime2])&lt;/p&gt;
-&lt;p&gt;The AS responds with a message, encrypted with a key derived from the user’s password that contains the ticket requested by client. This message also contains session key K&lt;!-- raw HTML omitted --&gt;c,tgs&lt;!-- raw HTML omitted --&gt; to be shared between TGS and Client. The
-client retrieves this key.
-The ticket is encrypted with TGS’s key K&lt;!-- raw HTML omitted --&gt;tgs&lt;!-- raw HTML omitted --&gt; which is
-already shared with AS. The ticket contains session key
-K&lt;!-- raw HTML omitted --&gt;c,tgs&lt;!-- raw HTML omitted --&gt; which is retrieved by TGS. Like this, the session
-key has been securely delivered to both C and the TGS.
-The ticket also contains ADc (Network Address of client)
-which prevents the use of ticket from workstation other
-than one that initially requested the ticket.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;C → TGS :&lt;/p&gt;
-&lt;p&gt;Below is the message that sends from client to TGS&lt;/p&gt;
-&lt;p&gt;V || Ticket&lt;!-- raw HTML omitted --&gt;tgs&lt;!-- raw HTML omitted --&gt; || Authenticator&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;p&gt;Authenticator&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt; = E(K&lt;!-- raw HTML omitted --&gt;c,tgs&lt;!-- raw HTML omitted --&gt;[C||AD&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt;||TS3])&lt;/p&gt;
-&lt;p&gt;The client sends message to TGS stating the identification of the requested service V, Ticket&lt;!-- raw HTML omitted --&gt;tgs&lt;!-- raw HTML omitted --&gt;, an authenticator which includes the identity of client C, address of Client AD&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt; and a time stamp. The authenticator is intended for use only once and has a very short lifetime. The TGS  can decrypt the ticket with the key that it shares with the
-AS. The TGS uses the session key Kc,tgs to decrypt the authenticator. The TGS can then check the identity and   address from the authenticator with that of the ticket and
-with the network address of the incoming message. If all match, then the TGS is assured that the sender of the ticket is indeed the ticket’s real owner.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;TGS → C :&lt;/p&gt;
-&lt;p&gt;Below is the message that sends back from TGS to Client&lt;/p&gt;
-&lt;p&gt;E(K&lt;!-- raw HTML omitted --&gt;c,tgs&lt;!-- raw HTML omitted --&gt;[K&lt;!-- raw HTML omitted --&gt;c,v&lt;!-- raw HTML omitted --&gt;|| V ||TS&lt;!-- raw HTML omitted --&gt;4&lt;!-- raw HTML omitted --&gt; ||Ticket&lt;!-- raw HTML omitted --&gt;v&lt;!-- raw HTML omitted --&gt;])&lt;/p&gt;
-&lt;p&gt;Ticket&lt;!-- raw HTML omitted --&gt;v&lt;!-- raw HTML omitted --&gt; = E(K&lt;!-- raw HTML omitted --&gt;v&lt;!-- raw HTML omitted --&gt;[K&lt;!-- raw HTML omitted --&gt;c,v&lt;!-- raw HTML omitted --&gt;||C||AD&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt;||V||TS4||Lifetime4])&lt;/p&gt;
-&lt;p&gt;The TGS then sends C above message as a response to request. This message is encrypted by session key shared between TGS and client and includes a session key to be shared between Client and the server V, the identification of V, and the time stamp of the ticket. The ticket also includes session key to be shared between client and server V,and it is encrypted with V’s key KV.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;C → V :&lt;/p&gt;
-&lt;p&gt;Below is the message that sends from client to Resource Server (v)&lt;/p&gt;
-&lt;p&gt;Ticket&lt;!-- raw HTML omitted --&gt;v&lt;!-- raw HTML omitted --&gt;||Authenticator&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;p&gt;Authenticator&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt; = E(K&lt;!-- raw HTML omitted --&gt;c,v&lt;!-- raw HTML omitted --&gt;[C||AD&lt;!-- raw HTML omitted --&gt;c&lt;!-- raw HTML omitted --&gt;||TS5])&lt;/p&gt;
-&lt;p&gt;In this message the client sends the ticket received by TGS to server V. Client also sends an authenticator. The server can decrypt the ticket, recover the session key, and decrypt
-the authenticator.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;V → C :&lt;/p&gt;
-&lt;p&gt;E(K&lt;!-- raw HTML omitted --&gt;c,v&lt;!-- raw HTML omitted --&gt;[TS5+1])&lt;/p&gt;
-&lt;p&gt;The server V sends the value of the time stamp from the authenticator, incremented by 1, encrypted in the session key K&lt;!-- raw HTML omitted --&gt;c,v&lt;!-- raw HTML omitted --&gt;. C can decrypt this message to recover the incremented time stamp. Because the message was
-encrypted by the session key, C is assured that it could have been created only by V.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;</description>
      </item>
    
      <item>
