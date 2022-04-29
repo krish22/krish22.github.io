@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Get Access Token from Keycloak using Postman"/>
 <meta name="twitter:description" content="This post will help you to automate getting access token from keycloak and added into request param before each API hits server"/>
 
-<meta name="generator" content="Hugo 0.74.1" />
+<meta name="generator" content="Hugo 0.59.1" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -155,104 +155,109 @@
 
 
     <p>This post will help you to automate getting access token from keycloak and added into request param before each API hits server.</p>
+
 <h2 id="to-get-access-token-using-postman-for-testing">To Get Access Token Using Postman (For Testing)</h2>
+
 <h3 id="create-new-collection-in-postman">Create new Collection in postman</h3>
+
 <ul>
-<li>
-<p>Click new collection button in postman</p>
-</li>
-<li>
-<p>Select variable tab and add the below variables</p>
+<li>Click new collection button in postman</li>
+
+<li><p>Select variable tab and add the below variables</p>
+
 <ul>
-<li>client_id : &lt;_Copy the client id from your realm setting in KC_&gt;</li>
-<li>client_secret : &lt;_Make sure you copy the right secrets for the client_&gt;</li>
+<li>client_id : &lt;<em>Copy the client id from your realm setting in KC</em>&gt;</li>
+<li>client_secret : &lt;<em>Make sure you copy the right secrets for the client</em>&gt;</li>
 <li>scope  : <em>type &lsquo;openid&rsquo;</em></li>
 <li>token_endpoint : &lt;_http://<strong>KEYCLOAK-SERVER_URL</strong>/auth/realms/<strong>REPLACE_WITH_YOUR_REALM_NAME</strong>/protocol/openid-connect/token_&gt;</li>
-<li>access_token : &lt;_Leave it blank, this will be populated by pre-request script_&gt;</li>
+<li>access_token : &lt;<em>Leave it blank, this will be populated by pre-request script</em>&gt;
+<br /></li>
 </ul>
-<p><img src="https://krish22.github.io/images/postman-variable.jpg" alt="variable"></p>
-</li>
-<li>
-<p>Go to authorization tab</p>
+
+<p><img src="https://krish22.github.io/images/postman-variable.jpg" alt="variable" /></p></li>
+
+<li><p>Go to authorization tab</p>
+
 <ul>
 <li>Select Type = Bearer Token</li>
-<li>Token = {{access_token}} <em><This is the variable we defined in above></em></li>
+<li>Token = {{access_token}} <em><This is the variable we defined in above></em>
+<br /></li>
 </ul>
-<p><img src="https://krish22.github.io/images/postman-auth.JPG" alt="authorization"></p>
-</li>
-<li>
-<p>Now go to pre-request scripts tab and paste the following code</p>
-</li>
-</ul>
+
+<p><img src="https://krish22.github.io/images/postman-auth.JPG" alt="authorization" />
+* Now go to pre-request scripts tab and paste the following code</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">client_id</span>      <span style="color:#f92672">=</span> <span style="color:#a6e22e">pm</span>.<span style="color:#a6e22e">collectionVariables</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;client_id&#34;</span>);
 <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">client_secret</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">pm</span>.<span style="color:#a6e22e">collectionVariables</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;client_secret&#34;</span>);
 <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">token_endpoint</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">pm</span>.<span style="color:#a6e22e">collectionVariables</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;token_endpoint&#34;</span>);
 <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">scope</span>          <span style="color:#f92672">=</span> <span style="color:#a6e22e">pm</span>.<span style="color:#a6e22e">collectionVariables</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;scope&#34;</span>);
 
 <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">details</span> <span style="color:#f92672">=</span> {
-   <span style="color:#e6db74">&#34;grant_type&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;client_credentials&#34;</span>,
-   <span style="color:#e6db74">&#34;scope&#34;</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">scope</span>
+<span style="color:#e6db74">&#34;grant_type&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;client_credentials&#34;</span>,
+<span style="color:#e6db74">&#34;scope&#34;</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">scope</span>
 }
 
 <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">formBody</span> <span style="color:#f92672">=</span> [];
 <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">property</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">details</span>) {
- <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">encodedKey</span> <span style="color:#f92672">=</span> encodeURIComponent(<span style="color:#a6e22e">property</span>);
- <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">encodedValue</span> <span style="color:#f92672">=</span> encodeURIComponent(<span style="color:#a6e22e">details</span>[<span style="color:#a6e22e">property</span>]);
- <span style="color:#a6e22e">formBody</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">encodedKey</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;=&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">encodedValue</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">encodedKey</span> <span style="color:#f92672">=</span> encodeURIComponent(<span style="color:#a6e22e">property</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">encodedValue</span> <span style="color:#f92672">=</span> encodeURIComponent(<span style="color:#a6e22e">details</span>[<span style="color:#a6e22e">property</span>]);
+<span style="color:#a6e22e">formBody</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">encodedKey</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;=&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">encodedValue</span>);
 }
 <span style="color:#a6e22e">formBody</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">formBody</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#34;&amp;&#34;</span>);
 
 <span style="color:#a6e22e">pm</span>.<span style="color:#a6e22e">sendRequest</span>({
-   <span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">token_endpoint</span>,
-   <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;POST&#39;</span>,
-   <span style="color:#a6e22e">header</span><span style="color:#f92672">:</span> {
-       <span style="color:#e6db74">&#39;Content-Type&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;application/x-www-form-urlencoded&#39;</span>,
-       <span style="color:#e6db74">&#39;Authorization&#39;</span> <span style="color:#f92672">:</span><span style="color:#e6db74">&#39;Basic &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">client_id</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">client_secret</span>)
-         },
-     <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">formBody</span>
+<span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">token_endpoint</span>,
+<span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;POST&#39;</span>,
+<span style="color:#a6e22e">header</span><span style="color:#f92672">:</span> {
+    <span style="color:#e6db74">&#39;Content-Type&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;application/x-www-form-urlencoded&#39;</span>,
+    <span style="color:#e6db74">&#39;Authorization&#39;</span> <span style="color:#f92672">:</span><span style="color:#e6db74">&#39;Basic &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">btoa</span>(<span style="color:#a6e22e">client_id</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">client_secret</span>)
+      },
+  <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">formBody</span>
 },  <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">response</span>) {
- <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">jsonResponse</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>();
- <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">jsonResponse</span>);
- <span style="color:#a6e22e">pm</span>.<span style="color:#a6e22e">collectionVariables</span>.<span style="color:#a6e22e">set</span>(<span style="color:#e6db74">&#34;access_token&#34;</span>, <span style="color:#a6e22e">jsonResponse</span>.<span style="color:#a6e22e">access_token</span>);
- <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">pm</span>.<span style="color:#a6e22e">collectionVariables</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;access_token&#34;</span>));
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">jsonResponse</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>();
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">jsonResponse</span>);
+<span style="color:#a6e22e">pm</span>.<span style="color:#a6e22e">collectionVariables</span>.<span style="color:#a6e22e">set</span>(<span style="color:#e6db74">&#34;access_token&#34;</span>, <span style="color:#a6e22e">jsonResponse</span>.<span style="color:#a6e22e">access_token</span>);
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">pm</span>.<span style="color:#a6e22e">collectionVariables</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;access_token&#34;</span>));
 
 }); 
+</code></pre></div></li>
+</ul>
 
-</code></pre></div><p><img src="https://krish22.github.io/images/postman-pre-request-script.JPG" alt="Pre request scripts"></p>
+<p><img src="https://krish22.github.io/images/postman-pre-request-script.JPG" alt="Pre request scripts" /></p>
+
 <ul>
-<li>
-<p>This code will get a new token from keycloak and extract the access_token from response
-and set into a collection variable {{access_token}}</p>
-</li>
-<li>
-<p>Now, save your collections</p>
-</li>
+<li><p>This code will get a new token from keycloak and extract the access_token from response
+and set into a collection variable {{access_token}}</p></li>
+
+<li><p>Now, save your collections</p></li>
 </ul>
-<hr>
+
+<hr />
+
 <h3 id="create-new-request">Create new Request</h3>
+
 <ul>
-<li>
-<p>Create a new request</p>
-</li>
-<li>
-<p>Select Authorization tab</p>
+<li>Create a new request</li>
+
+<li><p>Select Authorization tab</p>
+
 <ul>
-<li>Select Type = Inherit auth from parent</li>
+<li>Select Type = Inherit auth from parent
+<br /></li>
 </ul>
-<p><img src="https://krish22.github.io/images/postman-request.JPG" alt="Sample Request"></p>
-</li>
-<li>
-<p>Add your headers, request body if any</p>
-</li>
-<li>
-<p><strong>Make sure you save the request under the collection that you created above</strong></p>
-</li>
-<li>
-<p>Now try running the script.</p>
-</li>
+
+<p><img src="https://krish22.github.io/images/postman-request.JPG" alt="Sample Request" /></p></li>
+
+<li><p>Add your headers, request body if any</p></li>
+
+<li><p><strong>Make sure you save the request under the collection that you created above</strong></p></li>
+
+<li><p>Now try running the script.</p></li>
 </ul>
-<hr>
+
+<hr />
+
 <h3 id="key-points">Key Points</h3>
+
 <ul>
 <li>This script will be executed before each request in this collection and attach the access_token
 to the request.</li>
@@ -351,7 +356,7 @@ to the request.</li>
 
 </main>
     <footer>
-        <h6>Copyright © 2020 - Krishnan </h6>
+        <h6>Copyright &copy; 2020 - Krishnan </h6>
     </footer>
 </div>
 <script src="https://krish22.github.io/js/scripts.js"></script>

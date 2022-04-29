@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Basic Unix Commands"/>
 <meta name="twitter:description" content="This post has basic unix commands"/>
 
-<meta name="generator" content="Hugo 0.74.1" />
+<meta name="generator" content="Hugo 0.59.1" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -146,28 +146,33 @@
 
 
     <p>This post has basic unix commands that we use day by day</p>
+
 <ol>
-<li>
-<p>To check all tcp listen port</p>
+<li>To check all tcp listen port</li>
+</ol>
+
 <p><code>sudo netstat -ntlp | grep LISTEN</code></p>
-<p>There&rsquo;s a few parameters to netstat that are useful for this:</p>
+
+<pre><code>There's a few parameters to netstat that are useful for this:
+
+1. -l or --listening shows only the sockets currently listening for incoming connection.
+2. -a or --all shows all sockets currently in use.
+3. -t or --tcp shows the tcp sockets.
+4. -u or --udp shows the udp sockets.
+5. -n or --numeric shows the hosts and ports as numbers, instead of resolving in dns and looking in /etc/services.
+</code></pre>
+
 <ol>
-<li>-l or &ndash;listening shows only the sockets currently listening for incoming connection.</li>
-<li>-a or &ndash;all shows all sockets currently in use.</li>
-<li>-t or &ndash;tcp shows the tcp sockets.</li>
-<li>-u or &ndash;udp shows the udp sockets.</li>
-<li>-n or &ndash;numeric shows the hosts and ports as numbers, instead of resolving in dns and looking in /etc/services.</li>
+<li>To find process id for specific port</li>
 </ol>
-</li>
-<li>
-<p>To find process id for specific port</p>
+
 <p><code>sudo netstat -anp | grep 8080</code></p>
-</li>
-<li>
-<p>To find java process</p>
-<p><code>ps aux | grep java</code></p>
-</li>
+
+<ol>
+<li>To find java process</li>
 </ol>
+
+<p><code>ps aux | grep java</code></p>
 
 </article>
 
@@ -258,7 +263,7 @@
 
 </main>
     <footer>
-        <h6>Copyright © 2020 - Krishnan </h6>
+        <h6>Copyright &copy; 2020 - Krishnan </h6>
     </footer>
 </div>
 <script src="https://krish22.github.io/js/scripts.js"></script>

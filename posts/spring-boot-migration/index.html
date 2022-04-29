@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Spring Boot Migration From 1.5 to 2.0.5"/>
 <meta name="twitter:description" content="This post helps you to migrate of your spring boot application from 1.5 to 2.0.5"/>
 
-<meta name="generator" content="Hugo 0.74.1" />
+<meta name="generator" content="Hugo 0.59.1" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -152,25 +152,35 @@
 
 
     <p>Thinking of upgrading your Spring Boot application? In this post, I’d like to walk you through the process of upgrading a Spring Boot 1.x app to Spring Boot 2.</p>
+
 <h2 id="dependencies">Dependencies</h2>
+
 <h3 id="java">Java</h3>
+
 <p>Spring Boot 2.x will no longer support Java 7 and below, with Java 8 as the minimum requirement.</p>
+
 <p>It’s also the first version to support Java 9. There are no plans to support Java 9 on the 1.x branch. If you want to use the latest Java release and take full advantage of the framework, Spring Boot 2.x is your only option.</p>
+
 <h3 id="gradle">Gradle</h3>
+
 <p>The Gradle minimum supported version is <code>3.4</code>.</p>
+
 <p>The Gradle has many value-added features to have our dependency on the central repository.</p>
+
 <p>To create fat jars, <code>bootRepackage</code> Gradle’s task gets replaced with <code>bootJar</code> and <code>bootWar</code> to build jars and wars respectively.</p>
+
 <p>It is interesting to know that Spring Boot 2.x will no longer apply the dependency management plugin by default. If you want Spring Boot dependency management, then you should add:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-gradle" data-lang="gradle">apply plugin: <span style="color:#e6db74">&#39;io.spring.dependency-management&#39;</span>
-</code></pre></div><blockquote>
-<p>A few highlights regarding minimum required versions:</p>
-<ul>
-<li>Tomcat minimum supported version is 8.5</li>
-<li>Hibernate minimum supported version is 5.2</li>
-</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-gradle" data-lang="gradle">apply plugin: <span style="color:#e6db74">&#39;io.spring.dependency-management&#39;</span></code></pre></div>
+<blockquote>
+<p>A few highlights regarding minimum required versions:
+- Tomcat minimum supported version is 8.5
+- Hibernate minimum supported version is 5.2</p>
 </blockquote>
+
 <h2 id="steps-to-upgrade">Steps to Upgrade</h2>
+
 <h3 id="step-1">Step 1:</h3>
+
 <p>Assuming that you are using a Gradle build tool for building your application, your build.gradle file should look as follows:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-gradle" data-lang="gradle">buildscript <span style="color:#f92672">{</span>
 repositories <span style="color:#f92672">{</span> 
@@ -191,12 +201,17 @@ dependencies
 <span style="color:#f92672">{</span>
   compile group: <span style="color:#e6db74">&#39;javax.servlet&#39;</span><span style="color:#f92672">,</span> name: <span style="color:#e6db74">&#39;javax.servlet-api&#39;</span><span style="color:#f92672">,</span> version: <span style="color:#e6db74">&#39;3.1.0&#39;</span>
   compile group: <span style="color:#e6db74">&#39;org.springframework.boot&#39;</span><span style="color:#f92672">,</span> name: <span style="color:#e6db74">&#39;spring-boot-starter-web&#39;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Now, this will download all the required dependency jar files for the Spring Boot verison 2.0.5 release</p>
+<span style="color:#f92672">}</span></code></pre></div>
+<p>Now, this will download all the required dependency jar files for the Spring Boot verison 2.0.5 release</p>
+
 <h2 id="step-2">Step 2:</h2>
+
 <p>Change the application properties as follows if you used any of the following properties in your application:</p>
+
 <h3 id="servlet-specific-server-properties">Servlet-Specific Server Properties</h3>
+
 <p>A number of server.* properties that are servlet-specific have moved to server.servlet:</p>
+
 <table>
 <thead>
 <tr>
@@ -204,36 +219,46 @@ dependencies
 <th>New Property</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>server.context-parameters.*</td>
 <td>server.servlet.context-parameters.*</td>
 </tr>
+
 <tr>
 <td>server.context-path</td>
 <td>server.servlet.context-path</td>
 </tr>
+
 <tr>
 <td>server.jsp.class-name</td>
 <td>server.servlet.jsp.class-name</td>
 </tr>
+
 <tr>
 <td>server.jsp.init-parameters.*</td>
 <td>server.servlet.jsp.init-parameters.*</td>
 </tr>
+
 <tr>
 <td>server.jsp.registered</td>
 <td>server.servlet.jsp.registered</td>
 </tr>
+
 <tr>
 <td>server.servlet-path</td>
 <td>server.servlet.path</td>
 </tr>
 </tbody>
 </table>
+
 <p>Here is the list of commonly used <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html">application properties</a></p>
+
 <h3 id="step-3">Step 3:</h3>
+
 <p>Replace the deprecated methods and classes. Here are some of the deprecated classes that I came across and the respective classes</p>
+
 <table>
 <thead>
 <tr>
@@ -241,36 +266,46 @@ dependencies
 <th>New Class</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>org.springframework.web.context.request.RequestAttributes</td>
 <td>org.springframework.web.context.request.WebRequest</td>
 </tr>
+
 <tr>
 <td>org.springframework.data.querydsl.QueryDslPredicateExecutor</td>
 <td>org.springframework.data.querydsl.QuerydslPredicateExecutor</td>
 </tr>
+
 <tr>
 <td>org.springframework.boot.autoconfigure.web.DefaultErrorAttributes</td>
 <td>org.springframework.boot.web.servlet.error.DefaultErrorAttributes</td>
 </tr>
+
 <tr>
 <td>org.springframework.web.context.request.ServletRequestAttributes</td>
 <td>org.springframework.web.context.request.ServletWebRequest</td>
 </tr>
+
 <tr>
 <td>org.springframework.boot.web.support.SpringBootServletInitializer</td>
 <td>org.springframework.boot.web.servlet.support.SpringBootServletInitializer</td>
 </tr>
+
 <tr>
 <td>WebConfigurer</td>
 <td>WebMvcConfigurer</td>
 </tr>
 </tbody>
 </table>
+
 <h3 id="step-4">Step 4:</h3>
+
 <p>Now, run your main class. Your application should be up and running.</p>
+
 <h2 id="summary">Summary</h2>
+
 <p>In this article, we covered steps to migrating from Spring Boot 1.5.x to Spring Boot 2.0.5, where we discussed dependencies and how Java 8 becomes the minimum supported version.</p>
 
 </article>
@@ -366,7 +401,7 @@ dependencies
 
 </main>
     <footer>
-        <h6>Copyright © 2020 - Krishnan </h6>
+        <h6>Copyright &copy; 2020 - Krishnan </h6>
     </footer>
 </div>
 <script src="https://krish22.github.io/js/scripts.js"></script>
